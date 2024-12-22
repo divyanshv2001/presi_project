@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorities Alert Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .animation-container {
+            text-align: center;
+        }
+
+        .animation-container h1 {
+            font-size: 2rem;
+            color: #003366;
+            margin: 10px 0;
+        }
+
+        .animation-container p {
+            font-size: 1.5rem;
+            color: #ff0000;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .fade-text {
+            animation: fadeInOut 5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="animation-container">
+        <h1 class="fade-text">Calling Nearest Hospital...</h1>
+        <h1 class="fade-text">Calling Nearest Police Station...</h1>
+        <p>Estimated Time of Arrival: <span id="eta">1:00</span></p>
+    </div>
+
+    <script>
+        let remainingTime = 1 * 60; // 15 minutes in seconds
+
+        function updateETA() {
+            const etaElement = document.getElementById('eta');
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            etaElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (remainingTime > 0) {
+                remainingTime--;
+            } else {
+                clearInterval(timerInterval);
+                etaElement.textContent = "Arrived";
+            }
+        }
+
+        const timerInterval = setInterval(updateETA, 1000); // Update ETA every second
+        updateETA(); // Initial call
+    </script>
+</body>
+</html>
