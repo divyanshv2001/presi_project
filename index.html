@@ -3,74 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authorities Alert Animation</title>
+    <title>Authority Alert System</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-            font-family: Arial, sans-serif;
         }
-
-        .animation-container {
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
             text-align: center;
         }
-
-        .animation-container h1 {
+        h1 {
+            color: #d9534f;
+            margin-bottom: 20px;
+        }
+        .alert-box {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .timer {
             font-size: 2rem;
-            color: #003366;
-            margin: 10px 0;
-        }
-
-        .animation-container p {
-            font-size: 1.5rem;
-            color: #ff0000;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .fade-text {
-            animation: fadeInOut 5s infinite;
+            font-weight: bold;
+            color: #5bc0de;
         }
     </style>
 </head>
 <body>
-    <div class="animation-container">
-        <h1 class="fade-text">Calling Nearest Hospital...</h1>
-        <h1 class="fade-text">Calling Nearest Police Station...</h1>
-        <p>Estimated Time of Arrival: <span id="eta">1:00</span></p>
+    <div class="container">
+        <h1>Authority Alert System</h1>
+        
+        <!-- Alert Box -->
+        <div class="alert-box">
+            <p><strong>Alert:</strong> Immediate action required. Estimated Time of Arrival (ETA) for assistance:</p>
+            <div class="timer" id="timer">15:00</div>
+        </div>
     </div>
 
     <script>
-        let remainingTime = 1 * 60; // 15 minutes in seconds
+        // Timer variables
+        let timer;
+        let timeRemaining = 1 * 60; // 15 minutes in seconds
 
-        function updateETA() {
-            const etaElement = document.getElementById('eta');
-            const minutes = Math.floor(remainingTime / 60);
-            const seconds = remainingTime % 60;
-            etaElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        // Start the timer countdown
+        function startTimer() {
+            if (timer) clearInterval(timer); // Clear any existing timer
 
-            if (remainingTime > 0) {
-                remainingTime--;
-            } else {
-                clearInterval(timerInterval);
-                etaElement.textContent = "Arrived";
-            }
+            timer = setInterval(function() {
+                timeRemaining--;
+
+                // Calculate minutes and seconds
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
+
+                // Format time with leading zero for single digits
+                let formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                // Update timer on page
+                document.getElementById("timer").textContent = formattedTime;
+
+                // Stop the timer if it reaches zero
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    alert("Time's up! Calling authorities now...");
+                    makeCall();
+                }
+            }, 1000);
         }
 
-        const timerInterval = setInterval(updateETA, 1000); // Update ETA every second
-        updateETA(); // Initial call
+        // Automatically call a number once the timer hits zero
+        function makeCall() {
+            // The phone number to call
+            const phoneNumber = "+918789169517"; // Replace with your desired number
+
+            // Open the phone dialer automatically
+            window.location.href = `tel:${phoneNumber}`;
+        }
+
+        // Start the timer when the page loads
+        startTimer();
     </script>
 </body>
 </html>
