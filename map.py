@@ -1,11 +1,11 @@
 import requests
 from geopy.geocoders import Nominatim
 
-API_KEY = "YOUR_GOOGLE_MAPS_API_KEY"
+API_KEY = "sk-proj-VQTR1qM89SRBq37sYdk2tt1_Kx_pHeyBoIYvIpFXocXL0R7Jr17EzxA-TXuNOihIyaxMpON6S8T3BlbkFJTf7SfmpHAQ-buN"
 
 def get_current_location():
     geolocator = Nominatim(user_agent="geoapiExercises")
-    location = geolocator.geocode("Your City, Country")
+    location = geolocator.geocode("bengaluru,india")
     return location.latitude, location.longitude
 
 def find_nearby_places(lat, lon, place_type):
